@@ -22,12 +22,14 @@ data: [
   [114    605     94      136     96      167     553     395     164     159     284     104     530     551     544     18  ]
 ]
 
+; --- Part 1 ---
 r1: 0
 repeat row data [
   r1: r1 + (first maximum-of row) - (first minimum-of row)
 ]
 print [{Part 1:} r1]
 
+; --- Part 2 ---
 r2: 0
 repeat row data [
   repeat v1 row [
