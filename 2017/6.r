@@ -12,8 +12,8 @@ until [
   append/only mem copy data
   m: maximum-of data
   v: m/1 m/1: 0
-  for i 1 v 1 [
-    m: next m if tail? m [m: head m]
+  repeat i v [
+    if tail? m: next m [m: head m]
     m/1: m/1 + 1
   ]
   find/only mem data

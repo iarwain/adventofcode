@@ -8,8 +8,8 @@ data: {6837633479522485582745983529396749729546417558988158825688234469947359541
 ; --- Part 1 ---
 r1: 0
 forall data [
-  if (n: next data) == tail data [
-    n: head data
+  if tail? n: next data [
+    n: head n
   ]
   if (v: n/1) == data/1 [
     r1: r1 + v - #"0"
