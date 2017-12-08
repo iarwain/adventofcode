@@ -9,7 +9,7 @@ data: 289326
 if even? s: to-integer square-root data - 1 [s - 1]
 pos: to-pair reduce [h: s - 1 / 2 + 1 h]
 rem: data - (s * s)
-repeat a [0x-1 -1x0 0x1 1x0] [
+foreach a [0x-1 -1x0 0x1 1x0] [
   m: min rem (s + 1)
   rem: rem - m
   pos: pos + (m * a)

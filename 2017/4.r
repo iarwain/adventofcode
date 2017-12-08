@@ -520,17 +520,16 @@ data: [
 
 ; --- Part 1 ---
 r1: 0
-repeat row data [
+foreach row data [
   if row == unique row [++ r1]
 ]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
 r2: 0
-repeat row data [
-  forall row [
-    row/1: sort to-string row/1
+foreach row data [
+  if (sorted: map-each word row [sort to-string word]) == unique sorted [
+    ++ r2
   ]
-  if row == unique row [++ r2]
 ]
 print [{Part 2:} r2]

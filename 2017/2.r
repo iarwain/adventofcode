@@ -24,16 +24,16 @@ data: [
 
 ; --- Part 1 ---
 r1: 0
-repeat row data [
+foreach row data [
   r1: r1 + (first maximum-of row) - (first minimum-of row)
 ]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
 r2: 0
-repeat row data [
-  repeat v1 row [
-    repeat v2 row [
+foreach row data [
+  foreach v1 row [
+    foreach v2 row [
       if all [
         v1 < v2
         0 == mod v2 v1

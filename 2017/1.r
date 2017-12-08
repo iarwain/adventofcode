@@ -19,7 +19,7 @@ print [{Part 1:} r1]
 
 ; --- Part 2 ---
 r2: 0
-for i 1 l: length? data 1 [
+repeat i l: length? data [
   n: either i <= h: l / 2 [i + h] [i - h]
   if (v: data/:i) == data/:n [
     r2: r2 + v - #"0"
