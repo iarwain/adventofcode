@@ -3,7 +3,7 @@ REBOL [
   Date: 06-12-2017
 ]
 
-data: [0 5 10 0 11 14 13 4 11 8 8 7 1 4 12 11]
+data: load %data/6.txt
 
 ; --- Part 1 ---
 r1: 0

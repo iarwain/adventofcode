@@ -3,12 +3,12 @@ REBOL [
   Date: 03-12-2017
 ]
 
-data: 289326
+data: load %data/3.txt
 
 ; --- Part 1 ---
 if even? s: to-integer square-root data - 1 [s - 1]
 pos: to-pair reduce [h: s - 1 / 2 + 1 h]
-rem: data - (s * s)
+rem: data - (s ** 2)
 foreach a [0x-1 -1x0 0x1 1x0] [
   m: min rem (s + 1)
   rem: rem - m
