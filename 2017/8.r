@@ -3,16 +3,15 @@ REBOL [
   Date: 08-12-2017
 ]
 
-data: load %data/8.txt
+data: map-each line read/lines %data/8.txt [load line]
 
 ; --- Part 1 ---
 cpu: context [
-  peak: 0 i-size: 7 ip: program: copy data
+  peak: 0 ip: program: copy data
   regs: context insert [0] sort collect [
-    forskip program i-size [keep to-set-word program/1]
+    foreach line program [keep to-set-word line/1]
   ]
-  rule: [
-    ip:
+  instruction: [
     set reg word!
     set op ['inc | 'dec] (op: switch op [inc ['add] dec ['subtract]])
     set val integer!
@@ -20,11 +19,11 @@ cpu: context [
     (do bind repend/only cond [to-set-word reg op reg val to-set-word 'peak 'max reg 'peak] regs)
   ]
   run: does [
-    either attempt [parse program [any rule]] [
-      first maximum-of values-of regs
-    ] [
-      reduce [{Invalid instruction:} copy/part ip i-size]
+    peak: 0
+    foreach line program [
+      unless attempt [parse line instruction] [return rejoin [{Invalid instruction: [} ip: line {]}]]
     ]
+    first maximum-of values-of regs
   ]
 ]
 print [{Part 1:} r1: cpu/run]
