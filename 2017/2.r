@@ -17,10 +17,9 @@ r2: 0
 foreach row data [
   foreach v1 row [
     foreach v2 row [
-      if all [
+      all [
         v1 < v2
         0 == mod v2 v1
-      ] [
         r2: r2 + (v2 / v1)
         break
       ]

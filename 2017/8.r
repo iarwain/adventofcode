@@ -7,7 +7,7 @@ data: map-each line read/lines %data/8.txt [load line]
 
 ; --- Part 1 ---
 cpu: context [
-  peak: 0 ip: program: copy data
+  op: reg: val: cond: peak: 0 ip: program: copy data
   regs: context insert [0] sort collect [
     foreach line program [keep to-set-word line/1]
   ]
