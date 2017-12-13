@@ -9,8 +9,7 @@ data: read/lines %data/12.txt
 village: context [
   graph: collect [
     foreach line data [
-      line: load line
-      keep line/1 keep/only map-each node skip line 2 [to-integer node]
+      keep first line: load replace/all line {,} {} keep/only skip line 2
     ]
   ]
   connect: func [node [integer!] /into output [block!]] [

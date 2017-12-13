@@ -7,21 +7,24 @@ data: map-each line read/lines %data/8.txt [load line]
 
 ; --- Part 1 ---
 cpu: context [
-  op: reg: val: cond: peak: 0 ip: program: copy data
+  reg: op: val: cond: peak: 0 program: copy data
   regs: context insert [0] sort collect [
     foreach line program [keep to-set-word line/1]
   ]
-  instruction: [
-    set reg word!
+  make-rule: func [list [block!]] [collect [foreach entry list [keep reduce [to-lit-word entry '|]]]]
+  op-rule: make-rule [{>} {<} {>=} {<=} {==} {!=}]
+  reg-rule: make-rule words-of regs
+  instr-rule: [
+    set reg reg-rule
     set op ['inc | 'dec] (op: switch op [inc ['add] dec ['subtract]])
     set val integer!
-    copy cond ['if 2 word! integer!]
+    copy cond ['if reg-rule op-rule integer!]
     (do bind repend/only cond [to-set-word reg op reg val to-set-word 'peak 'max reg 'peak] regs)
   ]
   run: does [
-    peak: 0
+    peak: 0 foreach reg words-of regs [set reg 0]
     foreach line program [
-      unless attempt [parse line instruction] [return rejoin [{Invalid instruction: [} ip: line {]}]]
+      unless attempt [parse line instr-rule] [return rejoin [{Invalid instruction: [} line {]}]]
     ]
     first maximum-of values-of regs
   ]
