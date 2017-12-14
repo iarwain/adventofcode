@@ -48,7 +48,6 @@ r1: firewall/cost
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-
 delay-firewall: make firewall [
   delay?: has [delay collide] [
     delay: -1

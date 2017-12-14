@@ -22,14 +22,12 @@ village: context [
     ]
     output
   ]
-  groups: has [result ids neighbors]
+  groups: has [ids neighbors]
   [
-    result: copy [] ids: extract graph 2
-    until [
-      append/only result neighbors: connect ids/1
-      empty? ids: exclude ids neighbors
+    ids: extract graph 2
+    collect [
+      until [empty? ids: exclude ids keep/only connect ids/1]
     ]
-    result
   ]
 ]
 
