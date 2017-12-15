@@ -39,7 +39,7 @@ defrag: context [
     ]
   ]
   grid: use [index] [
-    collect [
+    make hash! collect [
       forall hashes [
         index: 0
         for j 0 120 8 [
@@ -51,24 +51,25 @@ defrag: context [
       ]
     ]
   ]
-  print: does [
+  print: funct [/into output [block! string!]] [
     repeat j 128 [
       repeat i 128 [
-        either find grid make pair! reduce [i - 1 j - 1] [prin {#}] [prin {.}]
+        char: either find grid make pair! reduce [i - 1 j - 1] [{#}] [{.}]
+        either into [append output char] [prin char]
       ]
-      prin newline
+      either into [append output newline] [prin newline]
     ]
   ]
-  groups: has [grid-copy connect?] [
+  groups: has [grid-copy connect] [
     grid-copy: copy grid
-    connect?: funct [pos [block!] /into output] [
+    connect: funct [pos [hash!] /into output [block!]] [
       any [output output: copy []]
       all [
         append output value: take pos
         foreach a [0x1 0x-1 1x0 -1x0] [
           all [
             pos: find grid-copy value + a
-            connect?/into pos output
+            connect/into pos output
           ]
         ]
       ]
@@ -76,14 +77,14 @@ defrag: context [
     ]
     collect [
       until [
-        keep/only connect? grid-copy
+        keep/only connect grid-copy
         empty? grid-copy
       ]
     ]
   ]
 ]
-; defrag/print
 
+; defrag/print
 r1: defrag/bit-count?
 print [{Part 1:} r1]
 
