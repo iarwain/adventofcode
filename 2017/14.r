@@ -51,14 +51,15 @@ defrag: context [
       ]
     ]
   ]
-  print: funct [/into output [block! string!]] [
+  print: funct [/into output [string!]] [
+    unless output [output: copy {}]
     repeat j 128 [
       repeat i 128 [
-        char: either find grid make pair! reduce [i - 1 j - 1] [{#}] [{.}]
-        either into [append output char] [prin char]
+        append output either find grid make pair! reduce [i - 1 j - 1] [{#}] [{.}]
       ]
-      either into [append output newline] [prin newline]
+      append output newline
     ]
+    either into [output] [system/words/print output]
   ]
   groups: has [grid-copy connect] [
     grid-copy: copy grid
