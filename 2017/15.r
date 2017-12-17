@@ -13,7 +13,7 @@ battle: context [
   muls: [16807.0 48271.0] init: use [value] [collect [parse data [2 [to integer! set value integer! (keep to-decimal value)]]]]
   round1: funct [] [
     count: 0 gens: copy init
-    loop 40000000 [
+    loop 40'000'000 [
       repeat i 2 [
         poke gens i ((muls/:i * gens/:i) // 2147483647.0)
       ]
@@ -23,7 +23,7 @@ battle: context [
   ]
   round2: funct [] [
     count: 0 mods: [4.0 8.0] gens: copy init
-    loop 5000000 [
+    loop 5'000'000 [
       repeat i 2 [
         value: gens/:i
         until [
