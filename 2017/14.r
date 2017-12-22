@@ -44,7 +44,7 @@ defrag: context [
         index: 0
         for j 0 120 8 [
           for i 7 0 -1 [
-            if find hashes/1 i + j [keep make pair! reduce [index (index? hashes) - 1]]
+            if find hashes/1 i + j [keep as-pair index (index? hashes) - 1]
             index: index + 1
           ]
         ]
@@ -55,7 +55,7 @@ defrag: context [
     unless output [output: copy {}]
     repeat j 128 [
       repeat i 128 [
-        append output either find grid make pair! reduce [i - 1 j - 1] [{#}] [{.}]
+        append output either find grid as-pair i - 1 j - 1 [{#}] [{.}]
       ]
       append output newline
     ]

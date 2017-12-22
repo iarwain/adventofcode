@@ -14,13 +14,11 @@ vec: context [
 ]
 sort/compare particles: collect [
   index: 0
+  data: load replace/all data charset [{=<,>}] { }
   parse data [
     some [
-      {p=<} copy px to {,} skip copy py to {,} skip copy pz to {>} 2 skip
-      {v=<} copy vx to {,} skip copy vy to {,} skip copy vz to {>} 2 skip
-      {a=<} copy ax to {,} skip copy ay to {,} skip copy az to {>} skip
-      (keep context [id: ++ index p: make vec [x: load px y: load py z: load pz] v: make vec [x: load vx y: load vy z: load vz] a: make vec [x: load ax y: load ay z: load az]])
-      opt newline
+      'p copy pos [3 integer!] 'v copy vel [3 integer!] 'a copy acc [3 integer!]
+      (keep context [id: ++ index p: make vec [x: pos/1 y: pos/2 z: pos/3] v: make vec [x: vel/1 y: vel/2 z: vel/3] a: make vec [x: acc/1 y: acc/2 z: acc/3]])
     ]
   ]
 ]
@@ -36,7 +34,7 @@ r1: particles/1/id
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-loop-count: 0
+loop-count: 0 max-gap: 10
 until [
   positions: make hash! []
   foreach particle particles [
@@ -55,7 +53,7 @@ until [
     ]
   ]
   if old-length != length? particles [loop-count: 0]
-  100 == loop-count: loop-count + 1
+  max-gap == loop-count: loop-count + 1
 ]
 
 r2: length? particles

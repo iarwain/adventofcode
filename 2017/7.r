@@ -6,7 +6,7 @@ REBOL [
 data: read/lines %data/7.txt
 
 ; --- Part 1 ---
-tree: make object! [
+tree: context [
   entries: copy []
   get-entry: func [name [string!]] [find/skip entries name 4]
   get-root: does [first back find entries none]

@@ -7,7 +7,7 @@ data: load %data/3.txt
 
 ; --- Part 1 ---
 if even? s: to-integer square-root data - 1 [s - 1]
-pos: to-pair reduce [h: s - 1 / 2 + 1 h]
+pos: as-pair h: s - 1 / 2 + 1 h
 rem: data - (s ** 2)
 foreach a [0x-1 -1x0 0x1 1x0] [
   m: min rem (s + 1)
@@ -26,7 +26,7 @@ until [
     v: 0 pos: pos + axes/1
     for j (pos/x - 1) (pos/x + 1) 1 [
       for k (pos/y - 1) (pos/y + 1) 1 [
-        if c: select grid to-pair reduce [j k] [
+        if c: select grid as-pair j k [
           v: v + c
         ]
       ]

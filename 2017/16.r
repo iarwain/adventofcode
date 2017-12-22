@@ -7,7 +7,7 @@ data: read %data/16.txt
 
 ; --- Part 1 ---
 dance: func [/times iterations [integer!] /local steps src dst dancers dances init] [
-  unless iterations [iterations: 1] dancers: copy init: {abcdefghijklmnop} dances: make block! reduce [init]
+  unless iterations [iterations: 1] dancers: copy init: {abcdefghijklmnop} dances: reduce [init]
   bind steps: collect [
     parse data [
       some [

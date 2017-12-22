@@ -17,7 +17,7 @@ spin: funct [times [integer!] /after-zero] [
     ]
     after-zero
   ] [
-    spinlock: make block! [0]
+    spinlock: [0]
     loop times [
       index: ((index + data - 1) // length: length + 1) + 2
       insert at spinlock index length
