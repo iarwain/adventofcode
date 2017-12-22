@@ -55,7 +55,7 @@ defrag: context [
     unless output [output: copy {}]
     repeat j 128 [
       repeat i 128 [
-        append output either find grid as-pair i - 1 j - 1 [{#}] [{.}]
+        append output pick [{#} {.}] find grid as-pair i - 1 j - 1
       ]
       append output newline
     ]

@@ -3,10 +3,11 @@ REBOL [
   Date: 21-12-2017
 ]
 
+; This one requires REBOL View, for image manipulation / colors
+
 data: read %data/21.txt
 
 ; --- Part 1 ---
-
 pix: [{.} | {#}] sep: [opt {/}]
 pattern-rule: [
   (content: copy [] pattern: none) [
@@ -21,8 +22,7 @@ make-pattern: funct [input [string!]] [
   pattern
 ]
 
-rules2: make hash! []
-rules3: make hash! []
+rules: make hash! []
 foreach [in out] collect [
   parse data [
     some [
@@ -31,25 +31,25 @@ foreach [in out] collect [
     ]
   ]
 ] [
-  dest: either 2x2 == in/size [rules2] [rules3]
-  foreach rot [0 90 270] [
-    use [new] [
-      repend dest [new: to-image layout/tight [image in effect [rotate rot]] out]
-      repend dest [to-image layout/tight [image new effect [flip 1x0]] out]
+  ; !!! Can't use 180° rotation as REBOL might make an error with the center pixel of an odd-sized image
+  foreach fl [0x0 1x0 0x1 1x1] [
+    repend rules [to-image layout/tight [image in effect [flip fl]] reduce [out]]
+  ]
+  foreach rot [90 270] [
+    foreach fl [0x0 1x0] [
+      repend rules [to-image layout/tight [image in effect [rotate rot flip fl]] reduce [out]]
     ]
   ]
-  repend dest [to-image layout/tight [image in effect [flip 0x1]] out]
-  repend dest [to-image layout/tight [image in effect [flip 1x1]] out]
 ]
 
-canvas: make-pattern {.#./..#/###}
+image: make-pattern {.#./..#/###}
 
-transform: func [image [image!]] [
+transform: funct [image [image!]] [
   result: make image! either 0x0 == (image/size // 2) [
-    dims: reduce [image/size / 2 2x2 3x3 rules2]
+    dims: reduce [image/size / 2 2x2 3x3]
     reduce [image/size * 3 / 2]
   ] [
-    dims: reduce [image/size / 3 3x3 4x4 rules3]
+    dims: reduce [image/size / 3 3x3 4x4]
     reduce [image/size * 4 / 3]
   ]
   repeat y dims/1/y [
@@ -57,7 +57,7 @@ transform: func [image [image!]] [
       src: dims/2 * as-pair x - 1 y - 1
       dst: dims/3 * as-pair x - 1 y - 1
       pattern: copy/part at image src dims/2
-      value: select dims/4 pattern
+      value: first select rules pattern
       if none? value [print [{ARG} pattern src dst]]
       change at result dst value
     ]
@@ -65,13 +65,11 @@ transform: func [image [image!]] [
   result
 ]
 
-repeat i 5 [canvas: transform canvas]
-lookup: canvas
+lookup: loop 5 [image: transform image]
 r1: 0 while [lookup: find/tail lookup white] [r1: r1 + 1]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-repeat i 13 [canvas: transform canvas]
-lookup: canvas
+lookup: loop 13 [image: transform image]
 r2: 0 while [lookup: find/tail lookup white] [r2: r2 + 1]
 print [{Part 2:} r2]

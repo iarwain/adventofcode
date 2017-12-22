@@ -21,7 +21,7 @@ r2: 0
 mem: copy data
 until [
   r2: r2 + 1
-  mem/1: (j: mem/1) + either j >= 3 [-1] [1]
+  mem/1: (j: mem/1) + pick [-1 1] j >= 3
   mem: skip mem j
   tail? mem
 ]
