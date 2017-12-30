@@ -9,18 +9,18 @@ data: read %data/25.txt
 core: context [
   start: iterations: 0
   steps: collect [
-    use [name state index value]
+    use [name state index value dir]
     [
       parse data [
-        thru {begin in state} copy start to {.} (start: to-word trim start)
-        thru {checksum after} copy iterations integer! (iterations: load iterations)
+        thru {begin in state } copy start to {.} (start: to-word start)
+        thru {checksum after } copy iterations integer! (iterations: load iterations)
         some [
-          thru {in state} copy name to {:} (keep name: to-word trim name keep/only state: array [2 3])
+          thru {in state } copy name to {:} (keep name: to-word name keep/only state: array [2 3])
           2 [
-            thru {value is} copy index integer! (index: 1 + load index)
-            thru {the value} copy value integer! (state/:index/1: pick [unset set] {0} = trim value)
-            thru {one slot to the} [{right} (state/:index/2: 'right) | {left} (state/:index/2: 'left)]
-            thru {with state} copy name to {.} (state/:index/3: to-word trim name)
+            thru {value is } copy index integer! (index: 1 + load index)
+            thru {the value } copy value integer! (state/:index/1: pick [unset set] {0} = value)
+            thru {one slot to the } copy dir [{right} | {left}] (state/:index/2: to-word dir)
+            thru {with state } copy name to {.} (state/:index/3: to-word name)
           ]
         ]
       ]
