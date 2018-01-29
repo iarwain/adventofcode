@@ -13,7 +13,7 @@ foreach gift data [
     copy w integer! {x} (w: load w)
     copy h integer! (h: load h)
   ]
-  foreach dim repend dimensions: reduce [l * w l * w l * h l * h w * h w * h] first minimum-of dimensions [
+  foreach dim append dimensions: reduce [l * w l * w l * h l * h w * h w * h] first minimum-of dimensions [
     r1: r1 + dim
   ]
 ]
@@ -27,7 +27,7 @@ foreach gift data [
     copy w integer! {x} (w: load w)
     copy h integer! (h: load h)
   ]
-  foreach dim repend remove maximum-of reduce [2 * l 2 * w 2 * h] l * w * h [
+  foreach dim append remove maximum-of reduce [2 * l 2 * w 2 * h] l * w * h [
     r2: r2 + dim
   ]
 ]
