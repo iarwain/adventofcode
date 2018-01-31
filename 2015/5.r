@@ -29,7 +29,7 @@ foreach string data [
   nice: reduce [false false]
   forall string [
     either 3 <= length? string [
-      nice/1: nice/1 or (not none? find skip string 2 copy/part string 2)
+      nice/1: nice/1 or (found? find skip string 2 copy/part string 2)
       nice/2: nice/2 or (string/1 = first skip string 2)
     ] [
       break
