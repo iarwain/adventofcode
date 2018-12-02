@@ -10,14 +10,13 @@ r1: 0 foreach v data [r1: r1 + v]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-r2: none r: 0 history: make hash! []
+r2: none s: 0 h: make hash! []
 until [
   foreach v data [
-    either find history r: r + v [
-      r2: r break
-    ] [
-      append history r
+    if find h s: s + v [
+      r2: s break
     ]
+    append h s
   ]
   r2
 ]
