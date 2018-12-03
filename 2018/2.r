@@ -31,14 +31,12 @@ until [
   foreach other data: next data [
     diff: pos: 0
     repeat i length [
-      all [
-        id/:i != other/:i
+      if id/:i != other/:i [
         diff: diff + 1
         pos: i
       ]
     ]
-    all [
-      diff = 1
+    if diff = 1 [
       r2: head remove at copy id pos
     ]
   ]
