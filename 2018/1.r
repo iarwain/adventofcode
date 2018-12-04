@@ -10,7 +10,7 @@ r1: 0 foreach v data [r1: r1 + v]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-r2: none s: 0 h: make hash! []
+r2: none s: 0 h: make hash! [0]
 until [
   foreach v data [
     if find h s: s + v [
