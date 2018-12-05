@@ -8,20 +8,20 @@ data: sort read/lines %data/4.txt
 ; --- Part 1 ---
 record: context [
   guards: strategy1: strategy2: none
-  use [history ids guard most-asleep strategy] [
+  use [history ids guard most-asleep] [
     history: copy []
     ids: unique collect [
       foreach log data [
         parse log [
-          copy time thru {]} (date: first time: load time date/time: time/2)
+          {[} copy date to {]} skip (date: to-date date)
           [ {guard #} copy id integer!
           | {falls asleep} (start: date)
           | {wakes up} (
-                      keep id
-                      for time start (date - 0:01) 0:01 [
-                        repend history [id time/time]
-                      ]
-                    )
+                         keep id
+                         for time start (date - 0:01) 0:01 [
+                           repend history [id time/time]
+                         ]
+                       )
           ]
         ]
       ]
@@ -52,15 +52,17 @@ record: context [
         count: most-asleep/2
       ]
     ]
-    strategy: func [method] [
-      guard: first sort/compare guards func [a b] method
+  ]
+  use [strategy] [
+    strategy: funct [field] [
+      guard: first sort/compare guards func [a b] reduce compose/deep [to-path [a (field)] to-word {>} to-path [b (field)]]
       guard/id * guard/most-asleep/time
     ]
     strategy1: does [
-      strategy [a/duration > b/duration]
+      strategy [duration]
     ]
     strategy2: does [
-      strategy [a/most-asleep/count > b/most-asleep/count]
+      strategy [most-asleep count]
     ]
   ]
 ]
