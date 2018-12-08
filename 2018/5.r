@@ -12,9 +12,8 @@ reduction: context [
     polymer: copy data
     react: func [poly] [
       until [
-        poly: either 32 = abs subtract to-integer poly/1 to-integer poly/2 [
-          remove/part poly 2
-          back poly
+        poly: either all [poly/2 32 = (poly/1 xor poly/2)] [
+          back remove/part poly 2
         ] [
           next poly
         ]
@@ -23,15 +22,14 @@ reduction: context [
       length? head poly
     ]
     simple: does [
-      react copy polymer
+      react polymer
     ]
-    best: has [results] [
-      results: collect [
-        foreach unit {abcdefghijklmnopqrstuvwxyz} [
+    best: does [
+      first minimum-of collect [
+        foreach unit unique polymer [
           keep react replace/all copy polymer unit {}
         ]
       ]
-      first minimum-of results
     ]
   ]
 ]

@@ -16,12 +16,13 @@ record: context [
           {[} copy date to {]} skip (date: to-date date)
           [ {guard #} copy id integer!
           | {falls asleep} (start: date)
-          | {wakes up} (
-                         keep id
-                         for time start (date - 0:01) 0:01 [
-                           repend history [id time/time]
-                         ]
-                       )
+          | {wakes up}
+          (
+            keep id
+            for time start (date - 0:01) 0:01 [
+              repend history [id time/time]
+            ]
+          )
           ]
         ]
       ]
@@ -45,7 +46,7 @@ record: context [
         repend guard/history [time 1]
       ]
     ]
-    foreach guard remove-each entry guards [string? entry] [
+    foreach guard guards: extract/index guards 2 2 [
       most-asleep: back maximum-of/skip next guard/history 2
       guard/most-asleep: context [
         time: most-asleep/1/minute
