@@ -8,15 +8,15 @@ data: load %data/8.txt
 ; --- Part 1 ---
 nav: context [
   meta: root: 0
-  use [nodes n-queue m-queue process] [
-    nodes: copy data n-queue: copy [] m-queue: copy []
+  use [nodes n-stack m-stack process] [
+    nodes: copy data n-stack: copy [] m-stack: copy []
     root: do process: has [value children result] [
-      insert n-queue take nodes
-      insert m-queue take nodes
+      insert n-stack take nodes
+      insert m-stack take nodes
       result: 0 children: collect [
-        repeat i take n-queue [keep process]
+        loop take n-stack [keep process]
       ]
-      repeat i take m-queue [
+      loop take m-stack [
         meta: meta + value: take nodes
         unless empty? children [
           value: any [children/:value 0]
