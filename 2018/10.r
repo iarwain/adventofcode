@@ -22,7 +22,7 @@ astrolabe: context [
     get-pos: func [star] [
       add star/1 multiply star/2 time
     ]
-    ; About 200x faster than computing the sum of distances which would give the precise time for the word without the need for manual scrubbing
+    ; About 150 faster than computing the minimum bounding box which would give a more precise time for the word without the need for manual scrubbing
     do approximate: has [to-star distance others] [
       until [
         time: time + 1 star: get-pos stars others: skip stars 2
