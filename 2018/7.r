@@ -44,31 +44,30 @@ sleigh: context [
         deps: copy init stack: copy roots
         to-string collect [
           until [
-            keep step: take stack
-            process step
+            process keep take stack
             empty? stack
           ]
         ]
       ]
-      parallel: has [time free worker workers step delta] [
-        time: 0 deps: copy init stack: copy roots free: 100 workers: head insert/dup copy [] reduce [free none] 5
+      parallel: has [time free-time worker workers delta] [
+        time: 0 deps: copy init stack: copy roots free-time: 100 workers: head insert/dup copy [] reduce [free-time none] 5
         until [
-          while [all [not empty? stack worker: find workers free]] [
-            worker/2: step: take stack
-            worker/1: 61 + step/1 - #"A"
+          while [all [not empty? stack worker: find workers free-time]] [
+            worker/2: take stack
+            worker/1: 61 + worker/2/1 - #"A"
           ]
           time: time + delta: first minimum-of/skip workers 2
           forskip workers 2 [
-            if workers/1 != free [
+            if workers/1 != free-time [
               workers/1: workers/1 - delta
               if workers/1 = 0 [
                 process workers/2
-                workers/1: free
+                workers/1: free-time
                 workers/2: none
               ]
             ]
           ]
-          all [empty? stack free = first minimum-of/skip workers 2]
+          all [empty? stack free-time = first minimum-of/skip workers 2]
         ]
         time
       ]

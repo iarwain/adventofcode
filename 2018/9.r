@@ -12,7 +12,7 @@ game: context [
     copy players integer! thru {worth} copy marbles integer! (players: load players marbles: load marbles)
   ]
   process: has [current scores player] [
-    current: insert next ring: make block! 2 * marbles 0 scores: array/initial players 0.0
+    current: insert ring: make block! 2 * marbles 0 scores: array/initial players 0.0
     repeat i marbles [
       either 0 = (i // 23) [
         scores/(player: i - 1 // players + 1): scores/:player + i + take back current: skip current -7
