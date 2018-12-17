@@ -29,7 +29,7 @@ device: context[
     ] 2
     use [analyze regs op a b c result] [
       analyze: has [backup ops] [
-        backup: copy regs
+        backup: regs
         ops: collect [
           foreach [opcode instruction] instructions [
             regs: copy backup
