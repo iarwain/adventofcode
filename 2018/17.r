@@ -53,7 +53,7 @@ scan: context [
           fill source
           not modified
         ]
-        save/png %ground.png to-image layout/tight [image ground]
+        save/png %ground.png ground
       ]
       still-waters: has [count] [count: 0 forall ground [all [find waters ground/1 count: count + 1]] count]
       running-waters: has [count] [count: 0 forall ground [all [ground/1 = still-water count: count + 1]] count]

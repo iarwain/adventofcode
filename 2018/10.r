@@ -59,7 +59,7 @@ astrolabe: context [
         keycode [#"^(esc)" #"^/"] [unview]
       ]
       focus res view gui
-      save/png %sky.png to-image layout/tight [image sky]
+      save/png %sky.png sky
       uppercase res/data
     ]
   ]

@@ -47,7 +47,7 @@ grid: context [
       best-pos: 0x0 best-power: any [powers/2 0] best-size: min-size: any [powers/1 1]
       y: 1 until [
         x: 1 until [
-          local-best: power: get-power x y (size: min-size) - 1
+          local-best: -4 * (size: min-size) * size power: get-power x y (size - 1)
           until [
             power: get-power-inc x y power size
             all [

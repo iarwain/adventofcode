@@ -64,8 +64,7 @@ chronal: context [
           ]
           voronoi: next voronoi
         ]
-        voronoi: head voronoi
-        save/png %voronoi.png to-image layout/tight [image voronoi]
+        save/png %voronoi.png head voronoi
       ]
       view layout [image voronoi [unview]]
     ]
