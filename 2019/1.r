@@ -15,8 +15,8 @@ r2: 0
 foreach value data [
   until [
     value: round/floor value / 3 - 2
-    r2: r2 + max value 0
-    value <= 0
+    r2: r2 + value: max value 0
+    value = 0
   ]
 ]
 print [{Part 2:} r2]
