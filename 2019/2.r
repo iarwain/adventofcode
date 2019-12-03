@@ -6,18 +6,12 @@ REBOL [
 data: load replace/all read %data/2.txt {,} { }
 
 ; --- Part 1 ---
-compute: funct [noun verb] [
-  instructions: [add multiply]
-  memory: copy data memory/2: noun memory/3: verb
-  use [inst op1 op2 dst] [
-    parse memory [
-      some [
-        1 1 99 break
-      | set inst integer! set op1 integer! set op2 integer! set dst integer! (
-          memory/(dst + 1): do compose [(instructions/:inst) memory/(op1 + 1) memory/(op2 + 1)]
-        )
-      ]
-    ]
+compute: func [noun verb /local instructions ip memory inst op1 op2 dst] [
+  instructions: [add multiply] ip: memory: copy data memory/2: noun memory/3: verb
+  while [ip/1 != 99] [
+    set [inst op1 op2 dst] ip
+    ip: skip ip 4
+    memory/(dst + 1): do compose [(instructions/:inst) memory/(op1 + 1) memory/(op2 + 1)]
   ]
   memory/1
 ]
@@ -30,11 +24,11 @@ solve: does [
   for i 0 99 1 [
     for j 0 99 1 [
       if 19690720 = compute i j [
-        return reduce [i j]
+        return 100 * i + j
       ]
     ]
   ]
 ]
 
-r2: (100 * first r2: solve) + r2/2
+r2: solve
 print [{Part 2:} r2]
