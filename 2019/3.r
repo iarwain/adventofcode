@@ -23,15 +23,14 @@ forall data [
     ]
   ]
 ]
-nodes: sort/compare intersect wires/1 wires/2 func [a b] [a: abs a b: abs b (a/x + a/y) < (b/x + b/y)]
-r1: (abs nodes/1/x) + abs nodes/1/y
+r1: first minimum-of map-each node nodes: intersect wires/1 wires/2 [
+  (abs node/x) + abs node/y
+]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-r2: first minimum-of collect [
-  foreach node nodes [
-    keep (index? find wires/1 node) + index? find wires/2 node
-  ]
+r2: first minimum-of map-each node nodes [
+  (index? find wires/1 node) + index? find wires/2 node
 ]
 
 print [{Part 2:} r2]
