@@ -6,10 +6,10 @@ REBOL [
 data: load replace/all read %data/5.txt {,} { }
 
 ; --- Part 1 ---
-compute: func [input /local ip memory opcode op1 op2 op3 mem-ops mode instructions res] [
+compute: func [input /local ip memory opcode op1 op2 op3 mem-ops mode res] [
   ip: memory: copy data
   while [ip/1 != 99] [
-    opcode: first+ ip set [op1 op2 op3] mem-ops: copy/part ip 3
+    opcode: first+ ip mem-ops: copy/part set [op1 op2 op3] ip 2
     mode: round opcode / 100 opcode: opcode // 100
     forall mem-ops [
       if 0 = (mode // 10) [
@@ -50,11 +50,11 @@ compute: func [input /local ip memory opcode op1 op2 op3 mem-ops mode instructio
       ]
       7 [
         memory/(op3 + 1): pick [1 0] mem-ops/1 < mem-ops/2
-          skip ip 3
+        skip ip 3
       ]
       8 [
         memory/(op3 + 1): pick [1 0] mem-ops/1 = mem-ops/2
-          skip ip 3
+        skip ip 3
       ]
     ]
   ]
