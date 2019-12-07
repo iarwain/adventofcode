@@ -7,12 +7,9 @@ data: parse read %data/6.txt {)}
 
 ; --- Part 1 ---
 objects: unique data
-get-orbits: funct [object] [
+get-orbits: func [object] [
   collect [
-    while [attempt [parent: first back find/skip next data object 2]]
-    [
-      keep object: parent
-    ]
+    until [none? attempt [keep object: first back find/skip next data object 2]]
   ]
 ]
 
@@ -23,8 +20,8 @@ foreach object objects [
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-you: get-orbits "YOU"
-santa: get-orbits "SAN"
+you: get-orbits {YOU}
+santa: get-orbits {SAN}
 common: first intersect you santa
 
 r2: (index? find you common) + (index? find santa common) - 2
