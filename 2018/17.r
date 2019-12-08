@@ -21,9 +21,8 @@ scan: context [
     ]
     xmin: (first minimum-of/skip walls 2) - 1 xmax: (first maximum-of/skip walls 2) + 1
     ymin: first minimum-of/skip next walls 2 ymax: first maximum-of/skip next walls 2
-    ground: make image! reduce [as-pair xmax - xmin + 1 ymax - ymin + 1 sand]
-    foreach [x y] walls [ground/(as-pair x - xmin y - ymin): clay]
-    init: copy ground
+    init: make image! reduce [as-pair xmax - xmin + 1 ymax - ymin + 1 sand]
+    foreach [x y] walls [init/(as-pair x - xmin y - ymin): clay]
     use [modified] [
       fill: funct [pos] [
         spread: false

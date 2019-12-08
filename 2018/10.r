@@ -11,7 +11,7 @@ astrolabe: context [
   use [size pos vel get-pos approximate star forecast update img txt] [
     size: 250x150
     stars: collect [
-      foreach line read/lines %data/10.txt [
+      foreach line data [
         parse line [
           thru "<" copy x to "," skip copy y to ">" (pos: as-pair load x load y)
           thru "<" copy x to "," skip copy y to ">" (vel: as-pair load x load y)
