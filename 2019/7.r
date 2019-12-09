@@ -8,7 +8,8 @@ data: load replace/all read %data/7.txt {,} { }
 ; --- Part 1 ---
 intcode-computer: context [
   memory: ip: last: none
-  compute: func [inputs /local opcode op1 op2 op3 mem-ops mode res] [
+  compute: func [inputs /local opcode op1 op2 op3 mem-ops mode res ops] [
+    inputs: to-block inputs res: none
     while [memory/:ip != 99] [
       opcode: memory/:ip mem-ops: copy/part set [op1 op2 op3] skip memory ip 2
       mode: round opcode / 100 opcode: opcode // 100
@@ -19,12 +20,9 @@ intcode-computer: context [
         mode: round mode / 10
       ]
       ip: switch opcode [
-        1 [
-          memory/(op3 + 1): mem-ops/1 + mem-ops/2
-          ip + 4
-        ]
-        2 [
-          memory/(op3 + 1): mem-ops/1 * mem-ops/2
+        1 2 [
+          ops: [add multiply]
+          memory/(op3 + 1): do reduce [ops/:opcode mem-ops/1 mem-ops/2]
           ip + 4
         ]
         3 [
@@ -35,26 +33,17 @@ intcode-computer: context [
           res: mem-ops/1
           ip + 2
         ]
-        5 [
-          either mem-ops/1 != 0 [
+        5 6 [
+          ops: [not-equal? equal?]
+          either do reduce [ops/(opcode - 4) mem-ops/1 0] [
             mem-ops/2 + 1
           ] [
             ip + 3
           ]
         ]
-        6 [
-          either mem-ops/1 = 0 [
-            mem-ops/2 + 1
-          ] [
-            ip + 3
-          ]
-        ]
-        7 [
-          memory/(op3 + 1): pick [1 0] (mem-ops/1 < mem-ops/2)
-          ip + 4
-        ]
-        8 [
-          memory/(op3 + 1): pick [1 0] (mem-ops/1 = mem-ops/2)
+        7 8 [
+          ops: [lesser? equal?]
+          memory/(op3 + 1): pick [1 0] do reduce [ops/(opcode - 6) mem-ops/1 mem-ops/2]
           ip + 4
         ]
       ]
