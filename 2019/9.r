@@ -7,7 +7,7 @@ REBOL [
 data: load replace/all read %data/9.txt {,} { }
 
 ; --- Part 1 ---
-intcode-computer: context [
+icc: context [
   memory: ip: base: last: _
   compute: func [inputs <local> opcode ops op1 op2 op3 in-ops out-ops mode res] [
     inputs: to-block inputs res: _
@@ -26,7 +26,7 @@ intcode-computer: context [
               2 [keep (in-op/1 + 1 + base) memory/(in-op/1 + base + 1)]
             ]
           ]
-          mode: round mode / 10
+          mode: to-integer mode / 10
         ]
       ]
       ip: switch opcode [
@@ -73,10 +73,10 @@ intcode-computer: context [
     memory: copy data ip: 1 base: 0 last: _
   ]
 ]
-r1: intcode-computer/compute 1
+r1: icc/compute 1
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-intcode-computer/reset
-r2: intcode-computer/compute 2
+icc/reset
+r2: icc/compute 2
 print [{Part 2:} r2]
