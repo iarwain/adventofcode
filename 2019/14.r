@@ -7,7 +7,7 @@ data: read %data/14.txt
 
 ; --- Part 1 ---
 factory: context [
-  recipes: make hash! [] ore?: fuel?: none
+  recipes: make hash! []
   use [letters chemical quantity type ingredients] [
     letters: reduce ['some charset [#"A" - #"Z"]]
     chemical: [copy quantity integer! copy type letters opt {,}]
@@ -23,7 +23,7 @@ factory: context [
       ]
     ]
   ]
-  use [left-over ingredients?] [
+  ore?: funct [quantity [number!] material [string!] /decimal] [
     left-over: make hash! []
     ingredients?: funct [quantity material] [
       materials: next find recipes material
@@ -44,39 +44,37 @@ factory: context [
         ]
       ]
     ]
-    ore?: funct [quantity material] [
-      materials: reduce [material to-decimal quantity] clear left-over ore: 0
-      until [
-        materials: collect [
-          foreach [material quantity] materials [
-            either material = "ORE" [
-              ore: ore + quantity
-            ] [
-              keep ingredients? quantity material
-            ]
+    materials: reduce [material to-decimal quantity] clear left-over ore: 0
+    until [
+      materials: collect [
+        foreach [material quantity] materials [
+          either material = "ORE" [
+            ore: ore + quantity
+          ] [
+            keep ingredients? quantity material
           ]
         ]
-        empty? materials
       ]
-      ore
+      empty? materials
     ]
-    fuel?: funct [ore] [
-      delta: 1'024 * 1'024 guess: 0.0
+    either decimal [ore] [to-integer ore]
+  ]
+  fuel?: funct [ore [number!]] [
+    delta: 1'024 * 1'024 guess: 0.0
+    until [
+      fuel: guess
       until [
-        fuel: guess
-        until [
-          fuel: fuel + delta
-          ore < ore? fuel "FUEL"
-        ]
-        guess: fuel - delta
-        (delta: delta / 2.0) < 1.0
+        fuel: fuel + delta
+        ore < ore?/decimal fuel "FUEL"
       ]
-      to-integer guess
+      guess: fuel - delta
+      (delta: delta / 2.0) < 1.0
     ]
+    to-integer guess
   ]
 ]
 
-r1: to-integer factory/ore? 1 "FUEL"
+r1: factory/ore? 1 "FUEL"
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
