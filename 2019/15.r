@@ -114,21 +114,19 @@ droid: context [
         roam: funct [] [
           repeat dir 4 [
             unless find map (pos + dirs/:dir) [
-              if 0 != res: move dir [
-                append trail pos
-                if any [2 = res 2 = res: roam] [break]
-                clear back tail trail
+              if 0 < res: move dir [
+                if any [res = 2 not find map 2] [append trail pos]
+                roam
+                unless find map 2 [clear back tail trail]
                 move switch dir [1 [2] 2 [1] 3 [4] 4 [3]]
               ]
             ]
           ]
-          res
         ]
       ]
       clear map clear trail
       roam
       set 'map unique/skip map 2
-
       length? droid/trail
     ]
     fill: funct [] [
@@ -148,7 +146,7 @@ droid: context [
             value >= 2      [cyan]
             find trail pos  [leaf]
             value = 1       [wheat]
-            value = 0       [black]
+            value = 0       [coal]
           ]
         ]
       ]
