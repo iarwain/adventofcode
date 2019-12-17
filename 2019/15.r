@@ -39,7 +39,7 @@ droid: context [
     discover: funct [] [
       icc: context [
         memory: ip: base: last: none
-        compute: func [inputs /local opcode ops op1 op2 op3 in-ops out-ops mode res] [
+        compute: func [inputs /local grow opcode ops op1 op2 op3 in-ops out-ops mode res] [
           inputs: to-block inputs res: none
           grow: func [size /local length] [
             all [size > length: length? memory insert/dup tail memory 0 size - length]

@@ -12,7 +12,7 @@ paintbot: context [
   paint: func [init /display <local> icc current color turn pos dir temp] [
     icc: context [
       memory: ip: base: last: _
-      compute: func [inputs <local> opcode ops op1 op2 op3 in-ops out-ops mode res] [
+      compute: func [inputs <local> grow opcode ops op1 op2 op3 in-ops out-ops mode res] [
         inputs: to-block inputs res: _
         grow: func [size <local> length] [
           all [size > length: length? memory insert/dup tail memory 0 size - length]
