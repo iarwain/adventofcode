@@ -106,41 +106,6 @@ in-range: funct [pos inventory] [
     ]
   ]
 ]
-path-to: funct [pos inventory target] [
-  dirs: [0x-1 0x1 -1x0 1x0]
-  visited: make hash! reduce [pos empty] trail: copy []
-  do roam: funct [] [
-    repeat dir 4 [
-      test-pos: pos + dirs/:dir
-      unless find visited test-pos [
-        append visited test-pos
-        test-cell: select map test-pos
-        if any [
-          test-cell = empty
-          test-cell = entrance
-          find key test-cell
-          all [
-            find door test-cell
-            ;print ["TESTING DOOR" test-cell]
-            find inventory lowercase test-cell
-          ]
-        ] [
-          ;print ["MOVING TO" test-pos]
-          append trail set 'pos test-pos
-          either test-cell = target [
-            return true
-          ] [
-            if roam [return true]
-          ]
-          set 'pos pos - dirs/:dir
-          clear back tail trail
-        ]
-      ]
-    ]
-    false
-  ]
-  trail
-]
 
 ; This will yield the correct result... eventually. It needs to be rewritten with optimizations cited at the top of the file to become viable.
 solve: funct [] [
@@ -169,6 +134,41 @@ solve: funct [] [
 ]
 
 ; Another aggressive optimization attempt that doesn't yield the correct result
+;path-to: funct [pos inventory target] [
+;  dirs: [0x-1 0x1 -1x0 1x0]
+;  visited: make hash! reduce [pos empty] trail: copy []
+;  do roam: funct [] [
+;    repeat dir 4 [
+;      test-pos: pos + dirs/:dir
+;      unless find visited test-pos [
+;        append visited test-pos
+;        test-cell: select map test-pos
+;        if any [
+;          test-cell = empty
+;          test-cell = entrance
+;          find key test-cell
+;          all [
+;            find door test-cell
+;            ;print ["TESTING DOOR" test-cell]
+;            find inventory lowercase test-cell
+;          ]
+;        ] [
+;          ;print ["MOVING TO" test-pos]
+;          append trail set 'pos test-pos
+;          either test-cell = target [
+;            return true
+;          ] [
+;            if roam [return true]
+;          ]
+;          set 'pos pos - dirs/:dir
+;          clear back tail trail
+;        ]
+;      ]
+;    ]
+;    false
+;  ]
+;  trail
+;]
 ;get-permutations: funct [values] [
 ;  collect [
 ;    do gen: func [values length] [
