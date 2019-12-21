@@ -13,7 +13,7 @@ ascii: context [
   use [icc] [
     icc: context [
       memory: ip: base: last: none
-      compute: func [inputs /local grow opcode ops op1 op2 op3 in-ops out-ops mode res] [
+      compute: func [inputs /log /local grow opcode ops op1 op2 op3 in-ops out-ops mode res] [
         unless block? inputs [inputs: to-block inputs] res: none
         grow: func [size /local length] [
           all [size > length: length? memory insert/dup tail memory 0 size - length]
@@ -42,16 +42,16 @@ ascii: context [
               if empty? inputs [print "EMERGENCY STOP!" return []]
               grow out-ops/1
               memory/(out-ops/1): take inputs
-              ;prin to-char memory/(out-ops/1)
+              if log [prin to-char memory/(out-ops/1)]
               ip + 2
             ]
             4 [
               res: in-ops/1
+              if log [attempt [prin to-char res]]
               ip + 2
             ]
             5 6 [
               ops: [not-equal? equal?]
-              if none? in-ops/1 [halt]
               either do reduce [ops/(opcode - 4) in-ops/1 0] [
                 in-ops/2 + 1
               ] [
@@ -80,7 +80,7 @@ ascii: context [
     intersection?: funct [] [
       icc/reset
       map: parse rejoin collect [
-        while [not block? res: icc/compute []] [
+        while [not block? res: icc/compute/log []] [
           keep to-char res
         ]
       ] none
@@ -130,7 +130,7 @@ ascii: context [
         ]
       ]
       until [
-        res: icc/compute inputs
+        res: icc/compute/log inputs
         block? res
       ]
       res/1
