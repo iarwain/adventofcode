@@ -102,12 +102,7 @@ paintbot: context [
       ] [
         append panels reduce [pos color]
       ]
-      temp: dir/x
-      either turn = 0 [
-        dir/x: 0 - dir/y dir/y: temp
-      ] [
-        dir/x: dir/y dir/y: 0 - temp
-      ]
+      dir: to-pair reduce pick [[negate dir/y dir/x] [dir/y negate dir/x]] turn = 0
       pos: pos + dir
     ]
     either display [process-image] [(length? panels) / 2]
