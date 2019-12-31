@@ -86,8 +86,8 @@ n-body: context [
           ]
         ]
       ]
-      gcd: funct [m n] [
-        while [n > 0] [k: m m: n n: k // m]
+      gcd: func [m n] [
+        while [n > 0] [set [m n] reduce [n m // n]]
         m
       ]
       ; Returning Least Common Multiple of all 3 axis-independent cycles

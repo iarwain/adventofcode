@@ -3,14 +3,12 @@ REBOL [
   Date: 17-12-2019
 ]
 
-; Part #2 needs to be solved programmatically, current solution uses hand-crafted path
-
 data: load replace/all read %data/17.txt {,} { }
 
 ; --- Part 1 ---
 ascii: context [
   intersection?: clean: none
-  use [icc] [
+  use [icc map] [
     icc: context [
       memory: ip: base: last: none
       compute: func [inputs /log /local grow opcode ops op1 op2 op3 in-ops out-ops mode res] [
@@ -79,26 +77,21 @@ ascii: context [
     ]
     intersection?: funct [] [
       icc/reset
-      map: parse rejoin collect [
+      pos: 0x0
+      set 'map make hash! collect [
         while [not block? res: icc/compute/log []] [
-          keep to-char res
-        ]
-      ] none
-      sum: 0
-      forall map [
-        if all [not head? map not tail? next map] [
-          line: map/1
-          forall line [
-            if all [
-              line/1 = #"#"
-              line/2 = #"#"
-              line/-1 = #"#"
-              map/-1/(index? line) = #"#"
-              map/2/(index? line) = #"#"
-            ] [
-              sum: ((index? map) - 1) * ((index? line) - 1) + sum
-            ]
+          either res = newline [
+            pos: as-pair 0 pos/y + 1
+          ] [
+            keep reduce [pos to-char res]
+            pos/x: pos/x + 1
           ]
+        ]
+      ]
+      sum: 0 check: array/initial 5 #"#"
+      foreach [pos cell] map [
+        if check = map-each dir [0x0 -1x0 1x0 0x-1 0x1] [select map pos + dir][
+          sum: pos/x * pos/y + sum
         ]
       ]
       sum
@@ -116,17 +109,59 @@ ascii: context [
           ]
         ] to-integer #"^/"
       ]
+      foreach [dir value] [-1x0 #"<" 1x0 #">" 0x-1 #"^^" 0x1 #"V"] [
+        if last-pos: find map value [
+          last-dir: dir last-pos: first back last-pos
+          break
+        ]
+      ]
+      path: rejoin collect [
+        dirs: [-1x0 0x-1 1x0 0x1 -1x0]
+        until [
+          steps: 0
+          foreach turn [#"L" #"R"] [
+            dir: either turn = #"L" [
+              first back find next dirs last-dir
+            ] [
+              select dirs last-dir
+            ]
+            pos: last-pos
+            while [#"#" = select map pos: pos + dir] [steps: steps + 1]
+            if steps != 0 [
+              keep reduce [turn steps]
+              last-dir: dir last-pos: pos - dir
+              break
+            ]
+          ]
+          steps = 0
+        ]
+      ]
+      next-command?: funct [path] [digit: charset [#"0" - #"9"] parse path [copy result [[#"L" | #"R"] 1 2 digit]] result]
+      count?: funct [path pattern] [result: 0 parse path [some [pattern (result: result + 1) | skip]] result]
+      foreach [name program] programs: [A "" B "" C ""] [
+        parse path [any [#"A" | #"B" | #"C"] start:]
+        while [
+          all [
+            21 >= length? to-ascii pattern: ajoin [program command: next-command? start]
+            1 < count? path pattern
+          ]
+        ] [
+          append program command
+          start: skip start length? command
+        ]
+        replace/all path program to-string name
+      ]
       icc/reset
       icc/memory/1: 2
       inputs: collect [
-        foreach block [
-        "AABCBCBCBA"
-        "R6L12R6"
-        "L12R6L8L12"
-        "R12L10L10"
-        "n"
+        foreach input reduce [
+          path
+          programs/A
+          programs/B
+          programs/C
+          "n"
         ] [
-          keep to-ascii block
+          keep to-ascii input
         ]
       ]
       until [

@@ -20,8 +20,8 @@ belt: context [
     ]
   ]
   do compute: funct [] [
-    gcd: funct [m n] [
-      while [n > 0] [k: m m: n n: k // m]
+    gcd: func [m n] [
+      while [n > 0] [set [m n] reduce [n m // n]]
       m
     ]
     angle?: funct [pos] [
