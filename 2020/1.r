@@ -8,11 +8,11 @@ data: load %data/1.txt
 ; --- Part 1 ---
 r1: do has [lookup] [
   lookup: copy []
-  forall data [
-    if find lookup (2020 - data/1) [
-      return also data/1 * (2020 - data/1) data: head data
+  foreach entry data [
+    if find lookup (2020 - entry) [
+      return entry * (2020 - entry)
     ]
-    append lookup data/1
+    append lookup entry
   ]
 ]
 print [{Part 1:} r1]
