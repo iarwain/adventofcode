@@ -6,7 +6,7 @@ REBOL [
 data: load %data/1.txt
 
 ; --- Part 1 ---
-r1: do has [lookup] [
+r1: do funct [] [
   lookup: copy []
   foreach entry data [
     if find lookup (2020 - entry) [
@@ -18,8 +18,7 @@ r1: do has [lookup] [
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-r2: do has [data2 data3] [
-  data: head data
+r2: do funct [] [
   forall data [
     data2: next data
     forall data2 [
