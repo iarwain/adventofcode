@@ -7,12 +7,12 @@ data: read %data/4.txt
 
 ; --- Part 1 ---
 passports: collect [
-  use [char rule passport] [
+  use [char rule passport count] [
     char: complement charset [{ ^/}]
     rule: [
-      (passport: copy [])
+      (passport: copy [] count: 14)
       some [
-        copy key [{byr} | {iyr} | {eyr} | {hgt} | {hcl} | {ecl} | {pid} | {cid}] {:}
+        copy key [{byr} | {iyr} | {eyr} | {hgt} | {hcl} | {ecl} | {pid} | {cid} (count: 16)] {:}
         copy value some char
         [{ } | newline | end]
         (append passport reduce [to-word key value])
@@ -21,13 +21,7 @@ passports: collect [
     parse/all data [
       some [
         rule (
-          if any [
-            16 = length? passport
-            all [
-              14 = length? passport
-              not find passport 'cid
-            ]
-          ] [
+          if count = length? passport [
             keep/only passport
           ]
         )
