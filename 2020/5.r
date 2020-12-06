@@ -6,34 +6,22 @@ REBOL [
 data: read/lines %data/5.txt
 
 ; --- Part 1 ---
-r1: 0
-seats: sort collect [
-  use [row column half] [
-    foreach seat data [
-      parse seat [
-        (row: 0x127 column: 0x7)
+r1: last seats: sort collect [
+  foreach line data [
+    use [pos range] [
+      parse line [
+        (pos: 0x0 range: 128x8)
         some [
-          (half: as-pair (row/y - row/x + 1) / 2 (column/y - column/x + 1) / 2)
-          {F} (row/y: row/y - half/x)
-        | {B} (row/x: row/x + half/x)
-        | {L} (column/y: column/y - half/y)
-        | {R} (column/x: column/x + half/y)
+          [(range/x: range/x / 2) {F} | {B} (pos/x: pos/x + range/x)]
+        | [(range/y: range/y / 2) {L} | {R} (pos/y: pos/y + range/y)]
         ]
       ]
-      r1: max r1 keep row/x * 8 + column/x
+      keep pos/x * 8 + pos/y
     ]
   ]
 ]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-for i first seats last seats 1 [
-  all [
-    not find seats i
-    find seats i - 8
-    find seats i + 8
-    r2: i
-    break
-  ]
-]
+r2: forall seats [if seats/2 - seats/1 != 1 [break/return seats/1 + 1]]
 print [{Part 2:} r2]
