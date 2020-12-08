@@ -7,19 +7,18 @@ data: read/lines %data/7.txt
 
 ; --- Part 1 ---
 bags: collect [
-  digit: charset "012345679"
+  digit: charset {012345679}
   foreach line data [
     children: copy []
     parse line [
-      copy source to {bags} (source: trim source) thru {contain}
+      copy bag to {bags} (bag: trim bag) thru {contain}
       some [
-        copy count some digit
-        copy child to {bag}
+        copy count some digit copy child to {bag}
         (append children reduce [trim child load count])
         opt thru {,}
       ]
     ]
-    keep reduce [source children]
+    keep reduce [bag children]
   ]
 ]
 check: [{shiny gold}]
@@ -38,8 +37,7 @@ print [{Part 1:} r1]
 
 ; --- Part 2 ---
 r2: do count-bags: funct [bag] [
-  result: 0 children: bags/:bag
-  foreach [child count] children [
+  result: 0 foreach [child count] bags/:bag [
     result: result + count + (count * count-bags child)
   ]
   result
