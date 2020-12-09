@@ -6,40 +6,39 @@ REBOL [
 data: read/lines %data/8.txt
 
 ; --- Part 1 ---
-
 handheld: context [
-  run: fix: none
-  use [ip acc program init] [
-    ip: 1 acc: 0 program: copy init: data
-    run: has [seen] [
-      ip: 1 acc: 0 seen: copy []
+  solve: fix: none
+  use [accumulator ip acc jmp nop program init] [
+    acc: func [value] [accumulator: accumulator + value]
+    jmp: func [value] [ip: ip + value - 1]
+    nop: func [value] []
+    program: copy init: bind collect [
+      foreach line data [keep/only load line]
+    ] 'acc
+    solve: has [seen] [
+      accumulator: 0 ip: 1 seen: copy []
       while [all [ip <= length? program not find seen ip]] [
         append seen ip
-        parse program/:ip [
-          [ {nop} to end
-          | {acc} copy value to end (acc: acc + load value)
-          ] (ip: ip + 1)
-        | {jmp} copy value to end (ip: ip + load value)
-        ]
+        do program/:ip
+        ip: ip + 1
       ]
-      acc
+      accumulator
     ]
-    fix: has [offset] [
-      offset: 0 until [
-        offset: offset + 1 program: copy init
-        if parse/all program/:offset [
-          [{nop} (new: {jmp}) | {jmp} (new: {nop})]
-          copy value to end (program/:offset: reform [new value])
-        ] [
-          run
+    fix: has [mapping offset] [
+      mapping: [jmp nop jmp] offset: 0
+      until [
+        offset: offset + 1 program: copy/deep init
+        if find mapping program/:offset/1 [
+          change program/:offset mapping/(program/:offset/1)
+          solve
         ]
         ip > length? program
       ]
-      acc
+      accumulator
     ]
   ]
 ]
-r1: handheld/run
+r1: handheld/solve
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
