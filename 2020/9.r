@@ -17,10 +17,7 @@ r1: foreach value data [
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-r2: forall data [
-  acc: 0 value: data range: collect [
-    until [r1 <= acc: acc + keep (first+ value)]
-  ]
-  if acc = r1 [break/return (first sort range) + (last range)]
-]
+value: 0 begin: end: data
+until [r1 = value: either value < r1 [value + first+ end] [value - first+ begin]]
+r2: (first range: sort copy/part begin end) + last range
 print [{Part 2:} r2]

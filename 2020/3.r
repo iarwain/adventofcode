@@ -23,4 +23,4 @@ foreach slope [1x1 3x1 5x1 7x1 1x2] [
   ]
   r2: r2 * count
 ]
-print [{Part 2:} copy/part r2: to-string r2 find r2 #"."]
+print [{Part 2:} copy/part r2: form r2 find r2 #"."]
