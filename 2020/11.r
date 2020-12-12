@@ -51,10 +51,9 @@ plane: context [
             ]
           ]
         ]
-        ;view layout [image (new/size * 10) new [unview]]
         also current = new current: new
       ]
-      count: 0 forall new [if new/1 = occupied [count: count + 1]] count
+      count: 0 forall current [if current/1 = occupied [count: count + 1]] count
     ]
   ]
 ]
