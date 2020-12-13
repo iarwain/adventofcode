@@ -12,7 +12,7 @@ ferry: context [
     dir: 'E pos: 0x0 waypoint: 10x-1
     foreach step data [
       parse step [copy inst [{N} | {W} | {S} | {E} | {L} | {R} | {F}] (inst: to-word inst) copy value to end (value: load value)]
-      switch inst bind/copy rules 'pos
+      switch inst bind rules 'pos
     ]
     (abs pos/x) + (abs pos/y)
   ]
