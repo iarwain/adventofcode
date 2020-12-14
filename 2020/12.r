@@ -19,8 +19,8 @@ ferry: context [
 ]
 r1: ferry/navigate [
   N W S E [pos: pos + (value * dirs/:inst)]
-  L [until [dir: L/:dir 0 = value: value - 90]]
-  R [until [dir: R/:dir 0 = value: value - 90]]
+  L [loop value / 90 [dir: L/:dir]]
+  R [loop value / 90 [dir: R/:dir]]
   F [pos: pos + (value * dirs/:dir)]
 ]
 print [{Part 1:} r1]
@@ -28,8 +28,8 @@ print [{Part 1:} r1]
 ; --- Part 2 ---
 r2: ferry/navigate [
   N W S E [waypoint: waypoint + (value * dirs/:inst)]
-  L [until [waypoint: as-pair waypoint/y negate waypoint/x 0 = value: value - 90]]
-  R [until [waypoint: as-pair negate waypoint/y waypoint/x 0 = value: value - 90]]
+  L [loop value / 90 [waypoint: as-pair waypoint/y negate waypoint/x]]
+  R [loop value / 90 [waypoint: as-pair negate waypoint/y waypoint/x]]
   F [pos: pos + (value * waypoint)]
 ]
 print [{Part 2:} r2]
