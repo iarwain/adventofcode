@@ -15,11 +15,16 @@ print [{Part 1:} r1]
 
 ; --- Part 2 ---
 ; --- Optimization: tracking indices only, still very slow in Rebol ---
-index: array size: 30'000'000
-repeat i (length? data) - 1 [index/(data/:i + 1): i]
-current: reduce [last data length? data]
-r2: first loop size - length? data [
-  new: either check: index/(current/1 + 1) [current/2 - check] [0]
-  current: reduce [new (index/(current/1 + 1): current/2) + 1]
+history: make hash! []
+repeat i (length? data) - 1 [insert history reduce [data/:i i]]
+r2: last data
+for index length? data 30'000'000 - 1 1 [
+  either check: find/skip history r2 2 [
+    r2: index - check/2
+    check/2: index
+  ] [
+    append history reduce [r2 index]
+    r2: 0
+  ]
 ]
 print [{Part 2:} r2]
