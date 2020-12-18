@@ -3,7 +3,7 @@ REBOL [
   Date: 14-12-2020
 ]
 
-; This one needs Rebol3-core in order to be able to do integer operations on 64 bits.
+; This one needs Rebol3-core in order to do integer operations on 64 bits.
 data: read/lines %data/14.txt
 
 ; --- Part 1 ---
