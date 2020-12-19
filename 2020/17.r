@@ -46,4 +46,4 @@ print [{Part 1:} r1]
 ; --- Part 2 ---
 ; Part 2 is rather slow using a sparse block to track the active cubes, would it be faster using a flat memory model?
 r2: pocket/process/hyper
-print [{Part 1:} r2]
+print [{Part 2:} r2]
