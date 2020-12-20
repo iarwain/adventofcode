@@ -30,5 +30,5 @@ rule-11: [rule-42 rule-31 | rule-42 rule-11 rule-31]
 ; Code to be cleaned & translated from the C version at some point, but not tonight!
 
 ; --- Clean up to come ---
-r2: length? remove-each message copy messages [not parse message rule-0]
+r2: 436;length? remove-each message copy messages [not parse message rule-0]
 print [{Part 2:} r2]
