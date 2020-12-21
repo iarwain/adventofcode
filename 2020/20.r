@@ -57,19 +57,8 @@ r1: 2383.0 * 2593 * 2753 * 3881
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-transform: funct [image] [
-  pos: 1x1 collect [
-    parse/all image [
-      some [
-        newline (pos: as-pair 1 pos/y + 1)
-      | [#"#" (keep pos) | skip] (pos: pos + 1x0)
-      ]
-    ]
-  ]
-]
-
 ; --- Using sea image obtained from C program as it's currently unoptimized for Rebol ---
-sea: transform {
+image: {
 .#.#.#..#.#..#.........#.....#...#........#...#...#....#.#...............#..###.##....#.........
 #...............#...#.#....#.......###..#.....##..##.........#.......#.#.....................#..
 #.....................#........#........#....##.#.#..#......#..#..........#...........#.#..#...#
@@ -167,24 +156,32 @@ sea: transform {
 .............#.#....#....#....#..........#......##...........#.#..#.#.....#...#...#...##........
 .#......#...#...#....#.............#....................#..#..#........#..##........#..#........
 }
+
+transform: funct [image] [
+  pos: 0x0 collect [
+    parse/all image [
+      some [
+        newline (pos: as-pair 0 pos/y + 1)
+      | [#"#" (keep pos) | skip] (pos: pos + 1x0)
+      ]
+    ]
+  ]
+]
+sea: transform image
 monster: transform {
                   #
 #    ##    ##    ###
  #  #  #  #  #  #
 }
-
-r2: do roughness?: funct [] [
+r2: do funct [] [
   variations: collect [
-    foreach op [
-      [offset]
-      [-1x1 * offset]
-      [1x-1 * offset]
-      [-1x-1 * offset]
-      [as-pair offset/y negate offset/x]
-      [-1x1 * as-pair offset/y negate offset/x]
-      [1x-1 * as-pair offset/y negate offset/x]
-      [-1x-1 * as-pair offset/y negate offset/x]
-    ] [keep/only map-each offset map-each pixel monster [pixel - monster/1] op]
+    foreach op collect [
+      foreach flip [1x1 -1x1 -1x-1 1x-1] [
+        foreach rotation [[offset] [as-pair offset/y negate offset/x]] [
+          keep/only append reduce [flip '*] rotation
+        ]
+      ]
+    ] [keep/only map-each offset map-each pixel next monster [pixel - monster/1] op]
   ]
   until [
     count: 0 offsets: first+ variations
@@ -195,7 +192,6 @@ r2: do roughness?: funct [] [
     ]
     count != 0
   ]
-  probe index? variations
   (length? sea) - (count * length? monster)
 ]
 print [{Part 2:} r2]
