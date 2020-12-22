@@ -12,35 +12,35 @@ foods: collect [
     keep reduce [parse ingredients {} parse allergens {,}]
   ]
 ]
-table: copy [] foreach [ingredients allergens] foods [
+dangerous: copy [] foreach [ingredients allergens] foods [
   foreach allergen allergens [
-    either find table allergen [
-      table/:allergen: intersect table/:allergen ingredients
+    either find dangerous allergen [
+      dangerous/:allergen: intersect dangerous/:allergen ingredients
     ] [
-      append table reduce [allergen ingredients]
+      append dangerous reduce [allergen ingredients]
     ]
   ]
 ]
-with-allergens: unique collect [foreach [allergen ingredients] table [keep ingredients]]
-r1: length? remove-each ingredient collect [foreach [ingredients allergens] foods [keep ingredients]] [find with-allergens ingredient]
+unsafe: unique collect [foreach [allergen ingredients] dangerous [keep ingredients]]
+r1: length? remove-each ingredient collect [foreach [ingredients allergens] foods [keep ingredients]] [find unsafe ingredient]
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-table: sort/skip collect [
+dangerous: sort/skip collect [
   until [
-    foreach [allergen ingredients] table [
+    foreach [allergen ingredients] dangerous [
       if 1 = length? ingredients [
         keep reduce [allergen ingredient: ingredients/1]
-        forskip table 2 [remove find table/2 ingredient]
-        remove/part find table allergen 2
+        forskip dangerous 2 [remove find dangerous/2 ingredient]
+        remove/part find dangerous allergen 2
         break
       ]
     ]
-    empty? table
+    empty? dangerous
   ]
 ] 2
 r2: remove rejoin collect [
-  foreach [allergen ingredient] table [
+  foreach [allergen ingredient] dangerous [
     keep reduce [{,} ingredient]
   ]
 ]
