@@ -9,7 +9,7 @@ data: read %data/22.txt
 combat: context [
   players: copy [] parse data [
     some [
-      thru {:^/} (append/only players copy [])
+      thru {:} newline (append/only players copy [])
       some [copy card integer! opt newline (append last players load card)]
     ]
   ]
