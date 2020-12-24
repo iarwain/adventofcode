@@ -16,12 +16,21 @@ loop 100 [
   insert next find cups destination selection
   current: any [select cups current cups/1]
 ]
-r1: load rejoin head insert cups take/part remove find cups 1 length? cups
+r1: load rejoin head insert cups take/part remove find cups 1 tail cups
 print [{Part 1:} r1]
 
 ; --- Part 2 ---
-; Tried to optimize by using list! but it's still extremely slow compared to the C version with linked list.
-; Need to find a smarter approach to do it in Rebol...
-
-r2: 907135.0 * 401051.0
+change back tail neighbors: use [i] [i: 1 array/initial 1'000'000 does [i: i + 1]] current: load to-string data/1
+use [previous] [previous: current forall data [neighbors/:previous: previous: load to-string data/1] neighbors/:previous: 1 + length? data]
+loop 10'000'000 [
+  selection: reduce [neighbors/:current neighbors/(neighbors/:current) neighbors/(neighbors/(neighbors/:current))]
+  destination: current until [
+    destination: either destination = 1 [length? neighbors] [destination - 1]
+    not find selection destination
+  ]
+  current: neighbors/:current: neighbors/(last selection)
+  neighbors/(last selection): neighbors/:destination
+  neighbors/:destination: selection/1
+]
+r2: (to-decimal neighbors/1) * neighbors/(neighbors/1)
 print [{Part 2:} copy/part r2: form r2 find r2 {.}]
