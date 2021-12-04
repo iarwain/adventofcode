@@ -8,7 +8,7 @@ data: read/lines %data/3.txt
 ; --- Part 1 ---
 ops: [lesser? greater-or-equal?]
 count: funct [data] [
-  values: array/initial 2 does [head insert/dup copy {} #"0" 16 - length? data/1]
+  values: array/initial reduce [2 16 - length? data/1] 0
   set 'counts copy []
   for i 1 length? data/1 1 [
     counter: 0
@@ -18,11 +18,11 @@ count: funct [data] [
       ]
     ]
     forall ops [
-      append values/(index? ops) pick [#"0" #"1"] do ops/1 counter (length? data) / 2
+      append values/(index? ops) pick [0 1] do ops/1 counter (length? data) / 2
     ]
     append counts counter
   ]
-  map-each value values [to-integer debase/base value 2]
+  map-each value values [to-integer debase/base to-string value 2]
 ]
 
 r1: count data
