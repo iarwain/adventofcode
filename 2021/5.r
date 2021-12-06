@@ -6,6 +6,7 @@ REBOL [
 data: map-each entry load replace/all replace/all read %data/5.txt {,} {x} {->} {} [entry + 1x1]
 
 ; --- Part 1 ---
+; Using a flat 2D array as it's ~6x faster than a hash!, which is ~60x faster than a block in this particular case
 count: funct [/all] [
   bound: 0x0 foreach pos data [bound: max pos bound]
   grid: array/initial reduce [bound/x bound/y] 0
