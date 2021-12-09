@@ -7,7 +7,7 @@ data: sort load replace/all read %data/7.txt {,} { }
 
 ; --- Part 1 ---
 fuel?: funct [/series] [
-  best: to-integer (power 2 31) - 1
+  best: to-integer #{7FFFFFFF}
   for i first data last data 1 [
     sum: 0
     foreach crab data [

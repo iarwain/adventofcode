@@ -38,7 +38,7 @@ hud: context [
       find-mapping 2 [5 = length? mappings/1 2 = length? intersect mappings/1 digits/5]
       find-mapping 5 [true]
 
-      result: result + load to-string map-each digit display/2 [(index? find digits digit) - 1]
+      result: result + load rejoin map-each digit display/2 [(index? find digits digit) - 1]
     ]
   ]
 ]
