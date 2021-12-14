@@ -35,12 +35,12 @@ caves: context [
           unless find basin pos [
             append basin pos
             if data/(pos/y)/(pos/x) < #"9" [
-              result: 1 case/all [
-                pos/x > 1      [result: result + expand pos - 1x0]
-                pos/x < size/x [result: result + expand pos + 1x0]
-                pos/y > 1      [result: result + expand pos - 0x1]
-                pos/y < size/y [result: result + expand pos + 0x1]
-              ]
+              result: 1 foreach [cond step] [
+                [pos/x > 1]      -1x0
+                [pos/x < size/x]  1x0
+                [pos/y > 1]       0x-1
+                [pos/y < size/y]  0x1
+              ] [all [do cond result: result + expand pos + step]]
             ]
           ]
           result

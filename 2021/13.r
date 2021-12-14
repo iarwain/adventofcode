@@ -27,7 +27,7 @@ paper: context [
     code: to-string collect [
       repeat y size/y + 1 [
         repeat x size/x + 1 [
-          keep pick [{#} { }] found? find points as-pair x - 1 y - 1
+          keep pick [{@@} {  }] found? find points as-pair x - 1 y - 1
         ]
         keep newline
       ]
