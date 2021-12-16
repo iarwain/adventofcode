@@ -5,7 +5,7 @@ REBOL [
 
 data: read/lines %data/15.txt
 
-; This would greatly benefit from optimization: 90+% of the time is spent sorting the queue
+; This would greatly benefit from optimization: 90+% of the time is spent handling the queue
 
 ; --- Part 1 ---
 cavern: context [
@@ -24,25 +24,24 @@ cavern: context [
     ] [
       map: cave
     ]
-    end: as-pair length? map/1 length? map costs: array/initial reduce [end/y end/x] 1000000 queue: reduce [cost: 0 pos: 1x1]
+    end: as-pair length? map/1 length? map costs: array/initial reduce [end/y end/x] 1000000 queue: make list! [0 1x1]
     until [
-      set [cost pos] take/part queue 2
-      touched: false
+      cost: take head queue pos: take head queue
       foreach dir [-1x0 1x0 0x-1 0x1] [
         new: pos + dir
-        all [
+        if all [
           new/x > 0
           new/x <= end/x
           new/y > 0
           new/y <= end/y
           costs/(new/y)/(new/x) > (new-cost: cost + map/(new/y)/(new/x))
+        ] [
           costs/(new/y)/(new/x): new-cost
-          append queue reduce [new-cost new]
-          touched: true
+          place: head queue while [all [not tail? place place/1 < new-cost]] [place: skip place 2]
+          insert place reduce [new-cost new]
         ]
       ]
-      all [touched sort/skip queue 2]
-      empty? queue
+      empty? head queue
     ]
     cost
   ]
