@@ -37,7 +37,7 @@ cavern: context [
           costs/(new/y)/(new/x) > (new-cost: cost + map/(new/y)/(new/x))
         ] [
           costs/(new/y)/(new/x): new-cost
-          place: head queue while [all [not tail? place place/1 < new-cost]] [place: skip place 2]
+          loop (length? place: head queue) / 2 [either place/1 >= new-cost [break] [place: skip place 2]]
           insert place reduce [new-cost new]
         ]
       ]
