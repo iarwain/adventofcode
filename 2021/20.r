@@ -3,7 +3,7 @@ REBOL [
   Date: 20-12-2021
 ]
 
-; Using a flat 2D array instead of a hash! of points should make it run much faster. Maybe one day?
+; I tried using a flat 2D array instead of a hash! of points but it is actually slower.
 
 data: read/lines %data/20.txt
 
