@@ -45,7 +45,7 @@ reactor: context [
         ]
         cuboids: collect [
           foreach cuboid cuboids [
-            either intersect? step cuboid [
+            either all [cuboid/state != step/state intersect? step cuboid] [
               foreach axis [x y z] [
                 case/all [
                   cuboid/:axis/1 < step/:axis/1 [keep also new: make cuboid [] new/:axis/2: (cuboid/:axis/1: step/:axis/1) - 1]
