@@ -6,8 +6,8 @@ REBOL [
 data: read/lines %data/2.txt
 
 games: collect [
-  digits: charset {0123456789}
-  letters: charset [#"a" - #"z"]
+  digits: system/catalog/bitsets/numeric
+  letters: system/catalog/bitsets/alpha
   foreach line data [
     max-colors: context [red: green: blue: 0]
     parse line [

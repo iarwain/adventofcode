@@ -6,7 +6,7 @@ REBOL [
 data: read/lines %data/1.txt
 
 calibrate: funct [/literal] [
-  digits: charset {0123456789}
+  digits: system/catalog/bitsets/numeric
   literals: [{zero} {one} {two} {three} {four} {five} {six} {seven} {eight} {nine}]
   rules: copy [
     some [

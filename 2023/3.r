@@ -6,8 +6,8 @@ REBOL [
 data: read/lines %data/3.txt
 
 list-parts: funct [/gears] [
-  numbers: charset {0123456789}
-  symbols: either gears [charset {*}] [complement union numbers charset {.}]
+  numbers: system/catalog/bitsets/numeric
+  symbols: either gears [charset {*}] [complement append copy numbers {.}]
   parts: map []
 
   for y 1 length? data 1 [
