@@ -7,32 +7,35 @@ data: split read/string %data/5.txt [newline newline]
 seeds: load next find take data {:}
 almanac: map-each step data [
   map-each range load next split step newline [
-    compose/deep [[(range/2) (range/2 + range/3)] [(range/1) (range/1 + range/3)]]
+    context [
+      from: context [begin: range/2 end: range/2 + range/3]
+      to: context [begin: range/1 end: range/1 + range/3]
+    ]
   ]
 ]
 
 fertilize: funct [seeds /with-range] [
-  all [with-range seeds: map-each [seed range] seeds [reduce [seed seed + range]]]
+  all [with-range seeds: map-each [seed range] seeds [context [begin: seed end: seed + range]]]
   foreach step almanac [
     seeds: collect [
       foreach seed seeds [
         foreach range step [
           either with-range [
             if all [
-              seed/2 > range/1/1
-              range/1/2 > seed/1
+              seed/end > range/from/begin
+              range/from/end > seed/begin
             ] [
-              inter: reduce [max seed/1 range/1/1 min seed/2 range/1/2]
-              all [seed/1 < inter/1 append/only seeds reduce [seed/1 inter/1]]
-              all [inter/2 < seed/2 append/only seeds reduce [inter/2 seed/2]]
-              seed: reduce [inter/1 + delta: range/2/1 - range/1/1 inter/2 + delta]
+              inter: reduce [max seed/begin range/from/begin min seed/end range/from/end]
+              all [seed/begin < inter/1 append/only seeds context [begin: seed/begin end: inter/1]]
+              all [inter/2 < seed/end append/only seeds context [begin: inter/2 end: seed/end]]
+              seed: context [begin: inter/1 + delta: range/to/begin - range/from/begin end: inter/2 + delta]
               break
             ]
           ] [
             all [
-              seed >= range/1/1
-              seed <= range/1/2
-              seed: range/2/1 + seed - range/1/1
+              seed >= range/from/begin
+              seed <= range/from/end
+              seed: range/to/begin + seed - range/from/begin
               break
             ]
           ]
@@ -41,7 +44,7 @@ fertilize: funct [seeds /with-range] [
       ]
     ]
   ]
-  all [with-range seeds: map-each seed seeds [seed/1]]
+  all [with-range seeds: map-each seed seeds [seed/begin]]
   first sort seeds
 ]
 
