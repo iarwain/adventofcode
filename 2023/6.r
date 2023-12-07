@@ -8,7 +8,8 @@ data: read/lines %data/6.txt
 race: funct [/single] [
   solve: funct [time distance] [
     ; Solving the equation -x^2 + time * x - distance = 0 (cf. (time - x) * x >= distance)
-    to-integer round/ceiling time + (square-root time ** 2 - (4 * distance)) / 2
+    to-integer 1
+             + round/floor time + (square-root time ** 2 - (4 * distance)) / 2
              - round/ceiling time - (square-root time ** 2 - (4 * distance)) / 2
   ]
   either single [
