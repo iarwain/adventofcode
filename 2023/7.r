@@ -37,10 +37,9 @@ camel: context [
     sort/compare/reverse tricks funct [a b] [
       score-a: score? a/histogram score-b: score? b/histogram
       either score-a = score-b [
-        hand: a/hand
-        forall hand [
-          if hand/1 != b/hand/(index? hand) [
-            return (index? find rank hand/1) > (index? find rank b/hand/(index? hand))
+        repeat i 5 [
+          if a/hand/:i != b/hand/:i [
+            return (index? find rank a/hand/:i) > (index? find rank b/hand/:i)
           ]
         ]
       ] [
