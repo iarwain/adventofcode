@@ -6,7 +6,7 @@ REBOL [
 data: read/lines %data/8.txt
 
 maps: context [
-  navigate: none
+  navigate:
   use [next-instruction? reset-instructions network start] [
     next-instruction?: does [
       all [tail? instructions instructions: head instructions]
@@ -21,7 +21,7 @@ maps: context [
         network/(nodes/1): reduce [nodes/3 nodes/5]
       ]
     ]
-    navigate: funct [/ghost] [
+    funct [/ghost] [
       either ghost [
         lcm: funct [values] [
           gcd: funct [m n] [while [n > 0] [set [m n] reduce [n m // n]] m]
