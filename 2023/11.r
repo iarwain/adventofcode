@@ -6,42 +6,34 @@ REBOL [
 data: read/lines %data/11.txt
 
 universe: context [
-  paths?: use [galaxies expansion] [
+  paths?: use [galaxies rows columns] [
     galaxies: copy []
-    expansion: context [
-      count: use [rows columns] [
-        rows: sort collect [
-          forall data [
-            any [find data/1 #"#" keep index? data]
+    rows: collect [
+      rows: 0
+      forall data [
+        keep rows: rows + pick [0 1] to-logic find data/1 #"#"
+      ]
+    ]
+    columns: collect [
+      columns: 0
+      for x 1 length? data/1 1 [
+        empty: true
+        forall data [
+          all [
+            data/1/:x = #"#"
+            append galaxies as-pair x index? data
+            empty: false
           ]
         ]
-        columns: sort collect [
-          for x 1 length? data/1 1 [
-            empty: true
-            forall data [
-              all [
-                data/1/:x = #"#"
-                append galaxies as-pair x index? data
-                empty: false
-              ]
-            ]
-            all [empty keep x]
-          ]
-        ]
-        funct [src dst] [
-          begin: min src dst end: max src dst count: 0
-          foreach column columns [all [column >= begin/x any [column <= end/x break] ++ count]]
-          foreach row rows [all [row >= begin/y any [row <= end/y break] ++ count]]
-          count
-        ]
+        keep columns: columns + pick [1 0] empty
       ]
     ]
     funct [/older] [
-      res: 0 size: pick [999999 1] to-logic older
+      res: 0 expansion: pick [999999 1] to-logic older
       forall galaxies [
-        foreach target next galaxies [
-          dist: abs (target - galaxies/1)
-          res: res + dist/x + dist/y + (size * expansion/count galaxies/1 target)
+        foreach other next galaxies [
+          begin: min galaxies/1 other end: max galaxies/1 other
+          res: res + end/x - begin/x + end/y - begin/y + (expansion * (columns/(end/x) - columns/(begin/x) + rows/(end/y) - rows/(begin/y)))
         ]
       ]
       to-integer res
