@@ -10,7 +10,7 @@ r1: 0
 repeat column length? first worksheet: load data [
   value: worksheet/1/:column
   for line 2 (length? worksheet) - 1 1 [
-    value: do compose [value (pick last worksheet column) worksheet/:line/:column]
+    value: do reduce [value pick last worksheet column worksheet/:line/:column]
   ]
   r1: r1 + value
 ]
@@ -28,7 +28,7 @@ foreach value collect [
     ]
     unless empty? op: trim to-string pick last data column [
       value: take operands
-      foreach operand operands [value: do compose [value (load op) operand]]
+      foreach operand operands [value: do reduce [value load op operand]]
       keep value
       clear operands
     ]
